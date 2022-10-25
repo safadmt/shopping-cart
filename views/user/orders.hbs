@@ -1,0 +1,47 @@
+<section>
+    <div class="container">
+        <table class="table mt-5">
+                {{#if userorders}}
+                <thead>
+                    <tr class="bg-info">
+                        <th class="tex" scope="col">Date</th>
+                        <th class="tex" scope="col">Pincode</th>
+                        <th class="tex" scope="col">Mobile</th>
+                        <th class="tex" scope="col">Address</th>
+                        <th class="tex" scope="col">Payment method</th>
+                        <th class="tex" scope="col">Amount</th>
+                        <th class="tex" scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                {{else}}
+                <div style="margin-left: 100px; margin-top: 100px;">
+                    <h5 >Click here to <a href="/login">Login</a></h5>
+                </div>
+                {{/if}}
+            <tbody>
+                {{#each userorders}}
+                <tr>
+                    <td class="font-weight-bold">{{this.date}}</td>
+                    <td class="font-weight-bold">{{this.deliveryDetails.pincode}}</td>
+                    <td class="font-weight-bold">{{this.deliveryDetails.mobile}}</td>
+                    <td class="font-weight-bold">{{this.deliveryDetails.address}}</td>
+                    <td class="font-weight-bold">{{this.paymentMethod}}</td>
+                    <td class="font-weight-bold">{{this.totalAmount}}</td>
+                    <td class="font-weight-bold">{{this.status}}</td>
+                    <td><a class="btn btn-primary" href="/view-order-products/{{this._id}}">View product</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+<style>
+    .text-info{
+        font-size: large;
+    }
+    .tex{
+        color: white;
+        font-size: larger;
+    }
+</style>

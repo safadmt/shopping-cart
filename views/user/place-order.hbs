@@ -1,0 +1,119 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card my-4">
+                    <div class="card-header mb-4">
+                        <h2>Enter delevery details</h2>
+                    </div>
+                    <div class="card-body mb-4">
+                        <form id="checkout-form">
+                            <label class="font-weight-bold" for="">Address</label>
+                            <input class="form-control border-info" type="Address" name="address">
+                            <label class="font-weight-bold" for="">Pincode</label>
+                            <input class="form-control border-info" type="number" name="pincode">
+                            <label class="font-weight-bold" for="">Mobile</label>
+                            <input class="form-control border-info" type="number" name="mobile">
+                            <input type="text" name="userId" value="{{user._id}}" hidden>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4 my-5">
+                <div class="card my-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">Total Amount: Rs.{{total}}</h5>
+                    </div>
+                    <div class="card-body">
+                        <label class="font-weight-bold" for="">Payment method</label>
+                        <div class="form-check">
+                            <input class="font-weight-bold" type="radio" name="payment-method" value="COD">
+                            <label class="form-check-label font-weight-bold" for="">
+                                COD
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="font-weight-bold" type="radio" name="payment-method" value="Online payment"
+                                checked>
+                            <label class="form-check-label font-weight-bold" for="">
+                                Online Payment
+                            </label>
+                        </div>
+                        <button class="btn btn-primary float-right" type="submit">Checkout</button>
+                    </div>
+
+
+
+                </div>
+
+
+                </form>
+            </div>
+        </div>
+</section>
+<script>
+    $("#checkout-form").submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+                alert(response)
+                if (response.codSuccess) {
+                    location.href = '/order-success'
+                } else {
+                    razorpayPayment(response)
+                }
+            }
+        })
+    })
+    function razorpayPayment(order) {
+        var options = {
+            "key": "rzp_test_Tmd62rp4we6tar", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Safad and Shihab ",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                //alert(response.razorpay_payment_id);
+                //alert(response.razorpay_order_id);
+               //alert(response.razorpay_signature)
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+    function verifyPayment(payment, order) {
+        $.ajax({
+            url: "/verify-payment",
+            data: {
+                payment,
+                order
+            },
+            method: "post",
+            success: (response) => {
+                if(response.status) {
+                    location.href = '/order-success'
+                } else {
+                    alert('Payment failed')
+                }
+            }
+        })
+    }
+</script>

@@ -1,0 +1,23 @@
+<div class="row pt-5">
+    <div class="col-md-4 m-auto bg-info">
+        <div class="container mt-5">
+            <h3 class="text-center">Login account</h3>
+            <form action="/admin/admin-login" method="post">
+                {{#if loginErr}}
+                <P class="text-warning">{{loginErr}}</P>
+                {{/if}}
+                <div class="form-group">
+                    <label for="">Email address</label>
+                    <input type="email" name="Email" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Password</label>
+                    <input type="password" name="Password" placeholder="Password" class="form-control">
+                </div>
+
+                <a class="text-warning" href="/signup">create new account?</a>
+                <button class="btn btn-primary float-right mb-4">Login</button>
+            </form>
+        </div>
+    </div>
+</div>

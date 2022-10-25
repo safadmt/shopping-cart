@@ -1,0 +1,67 @@
+<section>
+    <div id="maindiv">
+        <div class="container">
+        <div class="row">
+            <div class="col-md-4 mt-5">
+                <h5 class="font-weight-bold">Category</h5>
+                <ul>
+                    <li class="font-weight-bold">Mobiles</li>
+                    <li class="font-weight-bold">Home appliences</li>
+                    <li class="font-weight-bold">kitchen items</li> 
+                    <li class="font-weight-bold">foods</li>
+                </ul>
+            </div>
+            <div class="col-md-8 mt-5">
+                <h1>Welcome to A to Z shopping cart</h1>
+                <div class="mt-5">
+                    <div class="mt-5">
+                        <p class="paragraph1">Experience the new level of shopping</p>
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+         </div>
+    </div>
+    <div class="container">
+            <div class="row">
+                {{#each products}}
+                <div class="col-md-3" >
+                    <div class="card mt-4" style="width: 14rem; height: 25rem;" id="cardbg">
+                        <img class="card-img-top"
+                            style="height: 12rem"
+                            src="/product-images/{{this._id}}.jpg"
+                            alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.Name}}</h5>
+                            <p class="card-text">Rs:{{this.Price}}</p>
+                            <p class="card-text">{{this.Description}}</p>
+                            <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add To Cart</button>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+    </div>
+</section>
+<style>
+    #cardbg{
+        background-color: honeydew;
+    }
+    #maindiv{
+        
+        height: 500px;
+        border-bottom-left-radius: 5%;
+        border-bottom-right-radius: 7%;
+        background: rgb(132,160,182);
+        background: linear-gradient(0deg, rgba(132,160,182,1) 52%, rgba(45,213,253,1) 100%);
+    }
+    .paragraph1{
+        font-size: 4pc;
+        font-weight: bold;
+        font-style: italic;
+    }
+   
+</style>
+    

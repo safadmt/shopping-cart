@@ -1,0 +1,99 @@
+<section>
+    <div class="container">
+        <table class="table mt-5">
+            {{#if prod}}
+            <thead>
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+            {{else}}
+            <div class="container">
+                <div class="mt-5">
+                    <h3>cart is empty</h3>
+                    <a class="btn btn-primary mt-3" href="/">Add Products</a>
+                </div>
+            </div>
+            
+            {{/if}}
+            <tbody>
+                {{#each prod}}
+                <tr>
+                    
+                    <td><img style="width: 70px; height: 70px" src="/product-images/{{this.product._id}}.jpg" alt=""></td>
+                    <td>{{this.product.Name}}</td>
+                    <td>{{this.product.Price}}</td>
+                    
+                    <td>
+                
+                        <button class="cart-item-count mr-3"  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
+                        <span id="{{this.product._id}}">{{this.quantity}}</span>
+                        <button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">+</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger cart-item" onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <div class="mr-5">
+            <h4 class="float-right mr-5">Subtotal: Rs.<span id="total">{{totalValue}}</span> </h4>
+        
+        </div>
+        <div class="mt-3 mr-5 pb-5">
+            <a class="float-right btn btn-primary mr-5 mb-5" href="/place-order">Place order</a>
+        </div>
+        
+    </div>
+</section>
+
+<script>
+    function changeQuantity(cartId,proId,userId,count) {
+        let quantity = parseInt(document.getElementById(proId).innerHTML)
+        count = parseInt(count)
+        $.ajax({
+            url:'/change-product-quantity',
+            data: {
+                cart: cartId,
+                product:proId,
+                count:count,
+                user: userId,
+                quantity: quantity
+            },
+            method: 'post',
+            success:(response)=> {
+                if(response.removeProduct) {
+                    alert('product removed from the cart successfully')
+                    location.reload()
+                } else {
+                    document.getElementById(proId).innerHTML=quantity+count
+                    document.getElementById('total').innerHTML=response.total
+                }
+            }
+        })
+    }
+</script>
+
+<script>
+    function removeProduct(cartId, proId) {
+        $.ajax({
+            url:'/remove-cart-product',
+            data: {
+                cart: cartId,
+                product : proId
+            },
+            method: 'post',
+            success: (response) => {
+                if(response.removeProduct) {
+                    alert('product removed successfully')
+                    location.reload()
+                }
+                
+            }
+        })
+    }
+</script>

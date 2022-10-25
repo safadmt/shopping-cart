@@ -1,0 +1,26 @@
+<div class="row mt-5">
+    <div class="col-md-4 m-auto bg-info">
+        <div class="container mt-5 pl-3">
+            <h3 class="text-center">Create new Admin Account</h3>
+            <form action="/admin/admin-signup" method="post">
+                <div class="form-group">
+                <label for="" >Name</label>
+                <input type="text" name="Name" placeholder="Name" class="form-control">
+                </div>
+
+                <div class="form-group">
+                <label for="" >Email</label>
+                <input type="email" name="Email" placeholder="Email" class="form-control">
+                </div>
+
+                <div class="form-group">
+                <label for="">Password</label>
+                <input type="password" name="Password" placeholder="password" class="form-control">
+                </div>
+
+                <p>Already have an account? Login <a href="/admin/admin-login" class="text-warning">here</a></p>
+                <button type="submit" class="btn btn-primary float-right mb-5">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

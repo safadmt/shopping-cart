@@ -1,0 +1,98 @@
+<section>
+    <div class="container">
+        {{!-- <div>
+            <select class="btn btn-dark form-select float-right my-4" id="selectmenu" aria-label="Default select example">
+                <option selected>all</option>
+                <option value="1">pending</option>
+                <option value="2">success</option>
+                <option value="3">placed</option>
+            </select>
+        </div> --}}
+        
+        <table class="table mt-5" id="order-table">
+            {{#if orders}}
+            <thead>
+                <tr class="bg-info">
+                    <th class="tex" scope="col">Date</th>
+                    <th class="tex" scope="col">Pincode</th>
+                    <th class="tex" scope="col">Mobile</th>
+                    <th class="tex" scope="col">Address</th>
+                    <th class="tex" scope="col">Payment method</th>
+                    <th class="tex" scope="col">Amount</th>
+                    <th class="tex" scope="col">Status</th>
+                    <th class="tex" scope="col">Place order</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            {{else}}
+            <div style="margin-left: 100px; margin-top: 100px;">
+                <h5>Click here to <a href="/login">Login</a></h5>
+            </div>
+            {{/if}}
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    <td class="font-weight-bold">{{this.date}}</td>
+                    <td class="font-weight-bold">{{this.deliveryDetails.pincode}}</td>
+                    <td class="font-weight-bold">{{this.deliveryDetails.mobile}}</td>
+                    <td class="font-weight-bold">{{this.deliveryDetails.address}}</td>
+                    <td class="font-weight-bold">{{this.paymentMethod}}</td>
+                    <td class="font-weight-bold">{{this.totalAmount}}</td>
+                    <td class="font-weight-bold">{{this.status}}</td>
+                    <td class="font-weight-bold"><a class="btn btn-primary" onclick="changeOrderstatus('{{this._id}}')">Place</a></td>
+                    <td><a class="btn btn-primary" href="/admin/view-ordered-product/{{this._id}}">View product</a></td>
+                    
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+<script>
+    //$(document).ready(function () {
+    //    $('#search-input').keyup(function () {
+    //        var value = $(this).val()
+    //        console.log('Value:',value)
+    //   var data =searchTable(value, orders)
+    //    })
+    //})
+    //return filteredData;
+    //}
+    $(document).ready(function () {
+        $('#order-table').DataTable()
+    });
+
+    function changeOrderstatus(orderId) {
+        $.ajax({
+            url: '/admin/change-order-status',
+            data: {
+                order: orderId
+            },
+            method: 'post',
+            success: (response) => {
+                if(response.status) {
+                    alert('product shipped successfully')
+                    location.reload()
+                } else {
+                    console.log(err)
+                }
+                
+                
+            }
+        })
+    }
+</script>
+<style>
+    .text-info {
+        font-size: large;
+    }
+
+    .tex {
+        color: white;
+        font-size: larger;
+    }
+    #search-input {
+        border-color: black;
+        border-width: 2px;
+    }
+</style>
